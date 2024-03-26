@@ -4,11 +4,7 @@ export default {
   images: {
     remotePatterns: [
       {
-        hostname: "fumetest.s3.us-east-2.amazonaws.com",
-        protocol: "https",
-      },
-      {
-        hostname: "sm4irvp3lytbzamd.public.blob.vercel-storage.com",
+        hostname: "oqu2l1irpl5kmokr.public.blob.vercel-storage.com",
         protocol: "https",
       },
     ],

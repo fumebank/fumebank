@@ -42,7 +42,7 @@ model Fragrance {
   lineId Int
 
   wantedBy User[] @relation("Want")
-  ownedBy  User[] @relation("Have")
+  ownedBy  User[] @relation("Own")
 }
 
 // Auth
@@ -84,7 +84,7 @@ model User {
   sessions      Session[]
 
   wants Fragrance[] @relation("Want")
-  owns  Fragrance[] @relation("Have")
+  owns  Fragrance[] @relation("Own")
 }
 
 model VerificationToken {
