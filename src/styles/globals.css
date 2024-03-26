@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  .input {
+    @apply rounded border-2 border-solid border-black p-2;
+  }
+
+  .button {
+    @apply rounded bg-slate-600 p-3 text-white;
+  }
+}
