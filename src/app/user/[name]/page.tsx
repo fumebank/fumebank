@@ -18,6 +18,7 @@ export default async function Name({ params }: Props) {
         mode: "insensitive",
       },
     },
+    include: { wants: true, owns: true },
   })
 
   if (!user) throw Error("User not found")
@@ -30,6 +31,24 @@ export default async function Name({ params }: Props) {
       <p>
         {session?.user?.name?.toLowerCase() === params.name ? "You" : "NOT YOU"}
       </p>
+
+      <div className="bg-green-200">
+        <p>Wants</p>
+        {user.wants.map((fragrance) => (
+          <div key={fragrance.slug}>
+            <p>{fragrance.name}</p>
+          </div>
+        ))}
+      </div>
+
+      <div className="bg-blue-200">
+        <p>Owns</p>
+        {user.owns.map((fragrance) => (
+          <div key={fragrance.slug}>
+            <p>{fragrance.name}</p>
+          </div>
+        ))}
+      </div>
     </>
   )
 }
