@@ -21,18 +21,17 @@ export default function ListButtons({ fragrance, wantedBy, ownedBy }: Params) {
   useEffect(() => {
     setWantClicked(wantedBy.some((user) => user.name === data?.user?.name))
     setOwnClicked(ownedBy.some((user) => user.name === data?.user?.name))
-  }, [data])
+  }, [data, wantedBy, ownedBy])
 
-  const handleAction = async (e: any) => {
+  const handleAction = async ({ target: { name } }: any) => {
     if (status !== "authenticated") {
-      router.push("/api/auth/signin")
+      router.push("/")
       return
     }
 
-    const list = e.target.name
     let modifier
 
-    if (list === "wants") {
+    if (name === "wants") {
       modifier = wantClicked
       setWantClicked(!modifier)
     } else {
@@ -43,9 +42,9 @@ export default function ListButtons({ fragrance, wantedBy, ownedBy }: Params) {
     await fetch("/api/list", {
       method: "POST",
       body: JSON.stringify({
-        username: data.user?.name,
+        name: data.user?.name,
         id: fragrance.id,
-        list,
+        list: name,
         modifier: modifier ? "disconnect" : "connect",
       }),
     })

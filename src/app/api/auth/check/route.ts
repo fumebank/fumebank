@@ -10,7 +10,9 @@ export async function POST(req: NextRequest) {
     },
   })
 
-  if (user) {
+  const bad = ["default"]
+
+  if (user || bad.includes(username.toLowerCase())) {
     return NextResponse.json({}, { status: 409 })
   }
 

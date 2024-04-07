@@ -3,6 +3,7 @@ CREATE TABLE "Designer" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "slug" TEXT NOT NULL,
+    "cover" TEXT NOT NULL,
 
     CONSTRAINT "Designer_pkey" PRIMARY KEY ("id")
 );
@@ -61,9 +62,9 @@ CREATE TABLE "Session" (
 CREATE TABLE "User" (
     "id" TEXT NOT NULL,
     "name" TEXT NOT NULL,
-    "email" TEXT,
+    "email" TEXT NOT NULL,
     "emailVerified" TIMESTAMP(3),
-    "image" TEXT,
+    "image" TEXT DEFAULT 'default',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -82,7 +83,7 @@ CREATE TABLE "_Want" (
 );
 
 -- CreateTable
-CREATE TABLE "_Have" (
+CREATE TABLE "_Own" (
     "A" INTEGER NOT NULL,
     "B" TEXT NOT NULL
 );
@@ -118,10 +119,10 @@ CREATE UNIQUE INDEX "_Want_AB_unique" ON "_Want"("A", "B");
 CREATE INDEX "_Want_B_index" ON "_Want"("B");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "_Have_AB_unique" ON "_Have"("A", "B");
+CREATE UNIQUE INDEX "_Own_AB_unique" ON "_Own"("A", "B");
 
 -- CreateIndex
-CREATE INDEX "_Have_B_index" ON "_Have"("B");
+CREATE INDEX "_Own_B_index" ON "_Own"("B");
 
 -- AddForeignKey
 ALTER TABLE "Line" ADD CONSTRAINT "Line_designerId_fkey" FOREIGN KEY ("designerId") REFERENCES "Designer"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -145,7 +146,7 @@ ALTER TABLE "_Want" ADD CONSTRAINT "_Want_A_fkey" FOREIGN KEY ("A") REFERENCES "
 ALTER TABLE "_Want" ADD CONSTRAINT "_Want_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_Have" ADD CONSTRAINT "_Have_A_fkey" FOREIGN KEY ("A") REFERENCES "Fragrance"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_Own" ADD CONSTRAINT "_Own_A_fkey" FOREIGN KEY ("A") REFERENCES "Fragrance"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "_Have" ADD CONSTRAINT "_Have_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE "_Own" ADD CONSTRAINT "_Own_B_fkey" FOREIGN KEY ("B") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;

@@ -5,12 +5,17 @@ export default function New() {
   const handleNew = async (formData: FormData) => {
     "use server"
 
-    const { path } = await fetch(getUrl() + "/api/new", {
+    const [json, status] = await fetch(getUrl() + "/api/new", {
       method: "POST",
       body: formData,
-    }).then((res) => res.json())
+    }).then(async (res) => [await res.json(), res.status])
 
-    redirect(path)
+    switch (status) {
+      case 200:
+        redirect(json.path)
+      case 403:
+        console.log("BAD PATH")
+    }
   }
 
   return (

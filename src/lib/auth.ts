@@ -12,6 +12,6 @@ export const authOptions: AuthOptions = {
     }),
   ],
   pages: {
-    newUser: "/auth/change",
+    newUser: "/auth/username",
   },
 }

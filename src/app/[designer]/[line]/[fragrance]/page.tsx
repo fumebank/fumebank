@@ -17,13 +17,17 @@ export default async function Fragrance({ params }: Props) {
       line: { slug: params.line },
       slug: params.fragrance,
     },
-    include: { designer: true, line: true, wantedBy: true, ownedBy: true },
+    include: {
+      designer: true,
+      line: true,
+      wantedBy: true,
+      ownedBy: true,
+    },
   })
 
   if (!fragrance) throw Error("Fragrance not found")
 
   const { designer, line, wantedBy, ownedBy } = fragrance
-  const path = `${designer.slug}/${line.slug}/${fragrance.slug}`
 
   return (
     <>
@@ -32,11 +36,11 @@ export default async function Fragrance({ params }: Props) {
       <div className="m-4 flex gap-4">
         <div className="flex w-full justify-center rounded bg-slate-300">
           <Image
-            src={pathToUrl(path)}
+            src={pathToUrl(`${designer.slug}/${line.slug}/${fragrance.slug}`)}
             alt="Image"
-            priority
             width={400}
             height={400}
+            priority
           />
         </div>
 

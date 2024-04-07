@@ -10,9 +10,10 @@ datasource db {
 // Site
 
 model Designer {
-  id   Int    @id @default(autoincrement())
-  name String
-  slug String @unique
+  id    Int    @id @default(autoincrement())
+  name  String
+  slug  String @unique
+  cover String
 
   lines      Line[]
   fragrances Fragrance[]
@@ -76,10 +77,10 @@ model Session {
 
 model User {
   id            String    @id @default(cuid())
-  name          String    @unique @default(cuid())
-  email         String?   @unique
+  name          String    @unique @default(uuid())
+  email         String    @unique
   emailVerified DateTime?
-  image         String?
+  image         String    @default("https://oqu2l1irpl5kmokr.public.blob.vercel-storage.com/profiles/default.webp")
   accounts      Account[]
   sessions      Session[]
 

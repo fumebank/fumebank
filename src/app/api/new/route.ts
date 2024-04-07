@@ -13,6 +13,12 @@ export async function POST(req: NextRequest) {
     fSlug: slug(raw.fragrance),
   }
 
+  const bad = ["new", "user", "auth"]
+
+  if (bad.includes(data.dSlug)) {
+    return NextResponse.json({ message: "Invalid path" }, { status: 403 })
+  }
+
   const path = `${data.dSlug}/${data.lSlug}/${data.fSlug}`
 
   await prisma.$transaction(async (prisma) => {
@@ -22,7 +28,7 @@ export async function POST(req: NextRequest) {
 
     if (!designer) {
       designer = await prisma.designer.create({
-        data: { name: data.designer, slug: data.dSlug },
+        data: { name: data.designer, slug: data.dSlug, cover: path },
       })
     }
 

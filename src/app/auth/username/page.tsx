@@ -4,7 +4,7 @@ import { useSession } from "next-auth/react"
 import { redirect, useRouter } from "next/navigation"
 import { FormEvent, useState } from "react"
 
-export default function Change() {
+export default function Username() {
   const [username, setUsername] = useState("")
   const [error, setError] = useState("")
 
@@ -15,7 +15,7 @@ export default function Change() {
     redirect("/")
   }
 
-  const handleChange = async (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
 
     const status = await fetch("/api/auth/check", {
@@ -23,15 +23,16 @@ export default function Change() {
       body: JSON.stringify({ username }),
     }).then((res) => res.status)
 
-    if (status === 200) {
-      await fetch("/api/auth/change", {
-        method: "POST",
-        body: JSON.stringify({ username, current: data!.user!.name }),
-      })
+    switch (status) {
+      case 200:
+        await fetch("/api/auth/username", {
+          method: "POST",
+          body: JSON.stringify({ username, current: data!.user!.name }),
+        })
 
-      router.push("/")
-    } else {
-      setError("Username taken")
+        router.push("/")
+      case 409:
+        setError("Username unavailable")
     }
   }
 
@@ -39,7 +40,7 @@ export default function Change() {
     <>
       <h1>Change Username</h1>
 
-      <form onSubmit={handleChange}>
+      <form onSubmit={handleSubmit}>
         <input
           value={username}
           onChange={(e) => setUsername(e.target.value)}

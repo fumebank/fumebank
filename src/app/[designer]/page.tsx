@@ -15,7 +15,7 @@ export default async function Designer({ params }: Props) {
     include: { lines: true },
   })
 
-  if (!designer) throw Error("Designer not found")
+  if (!designer) throw Error("Designer not found | " + params.designer)
 
   return (
     <>
