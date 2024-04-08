@@ -18,7 +18,11 @@ export const authOptions: AuthOptions = {
     async session({ session, user }) {
       return {
         ...session,
-        user: { id: user.id, username: user.username, image: user.image },
+        user: {
+          id: user.id,
+          username: (user as any).username,
+          image: user.image,
+        },
       }
     },
   },
