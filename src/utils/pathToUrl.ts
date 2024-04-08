@@ -1,3 +1,9 @@
 export const pathToUrl = (path: string) => {
-  return `https://oqu2l1irpl5kmokr.public.blob.vercel-storage.com/${path}.webp`
+  let base = `https://oqu2l1irpl5kmokr.public.blob.vercel-storage.com/${path}`
+
+  if (!path.includes(".")) {
+    base += ".webp"
+  }
+
+  return base
 }

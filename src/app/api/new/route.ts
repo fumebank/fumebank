@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     fSlug: slug(raw.fragrance),
   }
 
-  const bad = ["new", "user", "auth"]
+  const bad = ["new", "user", "auth", "profiles"]
 
   if (bad.includes(data.dSlug)) {
     return NextResponse.json({ message: "Invalid path" }, { status: 403 })

@@ -31,7 +31,7 @@ export default function New() {
         <input name="fragrance" className="input" />
 
         <p>Image</p>
-        <input type="file" name="image" className="input" />
+        <input type="file" accept="image/webp" name="image" className="input" />
 
         <button className="button">Submit</button>
       </form>

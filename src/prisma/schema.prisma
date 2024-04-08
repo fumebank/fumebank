@@ -77,15 +77,16 @@ model Session {
 
 model User {
   id            String    @id @default(cuid())
-  name          String    @unique @default(uuid())
+  name          String?
   email         String    @unique
   emailVerified DateTime?
-  image         String    @default("https://oqu2l1irpl5kmokr.public.blob.vercel-storage.com/profiles/default.webp")
+  image         String    @default("default.webp")
   accounts      Account[]
   sessions      Session[]
 
-  wants Fragrance[] @relation("Want")
-  owns  Fragrance[] @relation("Own")
+  username String      @unique @default(uuid())
+  wants    Fragrance[] @relation("Want")
+  owns     Fragrance[] @relation("Own")
 }
 
 model VerificationToken {

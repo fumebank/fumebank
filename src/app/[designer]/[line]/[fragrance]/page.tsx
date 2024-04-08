@@ -17,12 +17,7 @@ export default async function Fragrance({ params }: Props) {
       line: { slug: params.line },
       slug: params.fragrance,
     },
-    include: {
-      designer: true,
-      line: true,
-      wantedBy: true,
-      ownedBy: true,
-    },
+    include: { designer: true, line: true, wantedBy: true, ownedBy: true },
   })
 
   if (!fragrance) throw Error("Fragrance not found")

@@ -12,6 +12,14 @@ export const authOptions: AuthOptions = {
     }),
   ],
   pages: {
-    newUser: "/auth/username",
+    newUser: "/settings",
+  },
+  callbacks: {
+    async session({ session, user }) {
+      return {
+        ...session,
+        user: { id: user.id, username: user.username, image: user.image },
+      }
+    },
   },
 }

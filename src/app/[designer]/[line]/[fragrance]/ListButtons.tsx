@@ -12,40 +12,37 @@ interface Params {
 }
 
 export default function ListButtons({ fragrance, wantedBy, ownedBy }: Params) {
-  const [wantClicked, setWantClicked] = useState(false)
-  const [ownClicked, setOwnClicked] = useState(false)
+  const [buttonStates, setButtonStates] = useState({
+    wants: false,
+    owns: false,
+  })
 
   const { status, data } = useSession()
   const router = useRouter()
 
   useEffect(() => {
-    setWantClicked(wantedBy.some((user) => user.name === data?.user?.name))
-    setOwnClicked(ownedBy.some((user) => user.name === data?.user?.name))
+    const wants = wantedBy.some((user) => user.id === data?.user.id)
+    const owns = ownedBy.some((user) => user.id === data?.user.id)
+
+    setButtonStates({ wants, owns })
   }, [data, wantedBy, ownedBy])
 
   const handleAction = async ({ target: { name } }: any) => {
     if (status !== "authenticated") {
-      router.push("/")
+      router.push("/api/auth/signin")
       return
     }
 
-    let modifier
-
-    if (name === "wants") {
-      modifier = wantClicked
-      setWantClicked(!modifier)
-    } else {
-      modifier = ownClicked
-      setOwnClicked(!modifier)
-    }
+    const newState = !buttonStates[name as keyof typeof buttonStates]
+    setButtonStates((prev) => ({ ...prev, [name]: newState }))
 
     await fetch("/api/list", {
       method: "POST",
       body: JSON.stringify({
-        name: data.user?.name,
-        id: fragrance.id,
+        userId: data.user.id,
+        fragranceId: fragrance.id,
         list: name,
-        modifier: modifier ? "disconnect" : "connect",
+        modifier: newState ? "connect" : "disconnect",
       }),
     })
   }
@@ -55,7 +52,7 @@ export default function ListButtons({ fragrance, wantedBy, ownedBy }: Params) {
       <button
         name="wants"
         onClick={handleAction}
-        className={"button " + (wantClicked ? "bg-blue-500" : "")}
+        className={`button ${buttonStates.wants ? "bg-blue-500" : ""}`}
       >
         Want
       </button>
@@ -63,7 +60,7 @@ export default function ListButtons({ fragrance, wantedBy, ownedBy }: Params) {
       <button
         name="owns"
         onClick={handleAction}
-        className={"button " + (ownClicked ? "bg-green-500" : "")}
+        className={`button ${buttonStates.owns ? "bg-green-500" : ""}`}
       >
         Own
       </button>

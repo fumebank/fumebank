@@ -1,24 +1,21 @@
 import { authOptions } from "@/lib/auth"
 import { prisma } from "@/lib/prisma"
+import { pathToUrl } from "@/utils/pathToUrl"
 import { getServerSession } from "next-auth"
 import Image from "next/image"
+import Link from "next/link"
 
 interface Props {
   params: {
-    name: string
+    username: string
   }
 }
 
-export default async function Name({ params }: Props) {
+export default async function Name({ params: { username } }: Props) {
   const session = await getServerSession(authOptions)
 
   const user = await prisma.user.findFirst({
-    where: {
-      name: {
-        equals: params.name,
-        mode: "insensitive",
-      },
-    },
+    where: { username: { equals: username, mode: "insensitive" } },
     include: { wants: true, owns: true },
   })
 
@@ -26,20 +23,23 @@ export default async function Name({ params }: Props) {
 
   return (
     <>
-      <h1>{user.name}</h1>
+      <h1>{user.username}</h1>
 
-      <Image
-        src={user.image}
-        alt="Profile Picture"
-        width={50}
-        height={50}
-        className="rounded-full"
-      />
-
-      <p>ID: {user.id}</p>
+      <div className="relative h-56 w-56">
+        <Image
+          src={pathToUrl("profiles/" + user.image)}
+          alt="Profile Picture"
+          fill
+          className="rounded-full object-cover"
+        />
+      </div>
 
       <p>
-        {session?.user?.name?.toLowerCase() === params.name ? "You" : "NOT YOU"}
+        {session?.user.username.toLowerCase() === username.toLowerCase() && (
+          <Link href={"/settings"} className="button">
+            Edit Profile
+          </Link>
+        )}
       </p>
 
       <p>Wants</p>
